@@ -57,9 +57,13 @@ func main() {
 
 	// Load IR signals
 	sigLib, err := irfile.Unmarshal(rawData)
-
+	
+	if err != nil {
+        panic(err)
+    }
+	
 	// Process IR signals
-	fmt.Println(fmt.Sprintf("Filetype: %s", sigLib.FileType))
+	fmt.Println(fmt.Sprintf("Filetype: %s", sigLib.Filetype))
 	fmt.Println(fmt.Sprintf("Version: %d", sigLib.Version))
 	fmt.Println(fmt.Sprintf("Signals: %d", len(sigLib.Signals)))
 
@@ -76,7 +80,7 @@ func main() {
 	sigLib.Signals = parsedSignals
 
 	// Save IR signals
-	rawLib, err = irfile.Marshal(sigLib)
+	rawLib, err := irfile.Marshal(sigLib)
 
 	if err != nil {
 		panic(err)
@@ -108,23 +112,23 @@ func main() {
 		Version:  "1",
 	}
 
-	addr := 0x05
-	cmdCodeMin := 0x4000
-	cmdCodeMax := 0x40FF
+	var addr uint32 = 0x05
+	var cmdCodeMin uint32 = 0x4000
+	var cmdCodeMax uint32 = 0x40FF
 
 	for cmdCode := cmdCodeMin; cmdCode <= cmdCodeMax; cmdCode++ {
 		sig := irfile.Signal{
 			Name:     fmt.Sprintf("Cmd %d", cmdCode),
 			Type:     irfile.SignalTypeParsed,
-			Protocol: irfile.ProtocolNECExt,
+			Protocol: string(irfile.ProtocolNECExt),
 			Address:  addr,
-			Command:  cmd,
+			Command:  cmdCode,
 		}
 
 		lib.Signals = append(lib.Signals, sig)
 	}
 
-	data, err := Marshal(lib)
+	data, err := irfile.Marshal(&lib)
 
 	if err != nil {
 		panic(err)
