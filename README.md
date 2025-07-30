@@ -1,4 +1,4 @@
-# Flipper IR File Parser
+# Flipper IR Signal File Parser
 
 🐬 Flipper Zero Infra Red (IR) File Parser. 
 
