@@ -1,0 +1,90 @@
+name: Checks
+
+concurrency:
+  group: {% raw %}${{ github.head_ref || github.ref_name }}{% endraw %}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint Code
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '{{go_version}}'
+
+      - name: Run Golang Lint Command
+        run: |
+          make lint
+
+  copyright:
+    runs-on: ubuntu-latest
+    name: Copyrights
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check License Header
+        uses: apache/skywalking-eyes/header@main
+        with:
+          config: .licenserc.yaml
+
+  generate:
+    runs-on: ubuntu-latest
+    name: Ensure Code Generated
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '{{go_version}}'
+
+      - name: Install Envdoc
+        run: |
+          go install github.com/g4s8/envdoc@latest
+
+      - name: Add Go Bin to PATH
+        run: |
+          {% raw %}echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH{% endraw %}
+
+      - name: Ensure Code Generated
+        run: |
+          make gen-check
+
+  build:
+             strategy:
+               matrix:
+                 os: [macos-latest, ubuntu-latest, windows-latest]
+    {% raw %}runs-on: ${{ matrix.os }}{% endraw %}
+             name: Build Binary
+             steps:
+               - name: Checkout Code
+                 uses: actions/checkout@v4
+
+               - name: Set up Go
+                 uses: actions/setup-go@v4
+                 with:
+                   go-version: '{{go_version}}'
+
+               - name: Build The Shop Binary
+                 run:  make build
