@@ -54,4 +54,4 @@ test: ## Run tests
 
 publish: ## Publish the package
 	@echo "🚀 Publishing the package.."
-	@GOPROXY=proxy.golang.org go list -m github.com/roma-glushko/flipper-irfile@v0.0.2
+	@GOPROXY=proxy.golang.org go list -m github.com/roma-glushko/flipperirfile@v0.0.2

@@ -24,7 +24,7 @@ data: 1617 4604 1559 1537 1560 1537 1560 4661 1533 33422 1613 4607 1566 1530 155
 ## Install
 
 ```sh
-go get github.com/roma-glushko/flipper-irfile
+go get github.com/roma-glushko/flipperirfile
 ```
 
 ## Usage
