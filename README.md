@@ -30,59 +30,108 @@ go get github.com/roma-glushko/flipper-irfile
 ## Usage
 
 ```go
+package main
+
 import (
+	"fmt"
     "io"
     "os"
 
-    "github.com/roma-glushko/flipper-irfile"
+	irfile "github.com/roma-glushko/flipper-irfile"
 )
 
-f, err := os.Open("tv.ir")
+func main() {
+	f, err := os.Open("tv.ir")
 
-if err != nil {
-    panic(err)
-}
-
-defer f.Close()
-
-rawData, err := io.ReadAll(f)
-
-if err != nil {
-    panic(err)
-}
-
-// Load IR signals
-sigLib, err := flipperirfile.Unmarshal(rawData)
-
-// Process IR signals
-fmt.Println(fmt.Sprintf("Filetype: %s", sigLib.FileType))
-fmt.Println(fmt.Sprintf("Version: %d", sigLib.Version))
-fmt.Println(fmt.Sprintf("Signals: %d", len(sigLib.Signals)))
-
-parsedSignals := make([]*flipperirfile.Signal, 0, 20)
-
-for _, s := range sigLib.Signals {
-	if s.Type != flipperirfile.SignalTypeParsed {
-        continue
+	if err != nil {
+		panic(err)
 	}
 
-    parsedSignals = append(parsedSignals, s)
+	defer f.Close()
+
+	rawData, err := io.ReadAll(f)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Load IR signals
+	sigLib, err := irfile.Unmarshal(rawData)
+
+	// Process IR signals
+	fmt.Println(fmt.Sprintf("Filetype: %s", sigLib.FileType))
+	fmt.Println(fmt.Sprintf("Version: %d", sigLib.Version))
+	fmt.Println(fmt.Sprintf("Signals: %d", len(sigLib.Signals)))
+
+	parsedSignals := make([]irfile.Signal, 0, 20)
+
+	for _, s := range sigLib.Signals {
+		if s.Type != irfile.SignalTypeParsed {
+			continue
+		}
+
+		parsedSignals = append(parsedSignals, s)
+	}
+
+	sigLib.Signals = parsedSignals
+
+	// Save IR signals
+	rawLib, err = irfile.Marshal(sigLib)
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile("parsed.ir", rawLib, 0644)
+
+	if err != nil {
+		panic(err)
+	}
 }
+```
 
-sigLib.Signals = parsedSignals
+### Generate IR Signals
 
-// Save IR signals
-rawLib, err = flipperirfile.Marshal(sigLib)
+```golang
+package main
 
-if err != nil {
-    panic(err)
-}
+import (
+	"fmt"
+	"os"
+	
+	irfile flipperirfile "github.com/roma-glushko/flipper-irfile"
+)
 
-err = os.WriteFile("parsed.ir", rawLib, 0644)
-
-if err != nil {
-    panic(err)
-}
+func main() {
+    lib := irfile.SignalLib{
+        Filetype: irfile.FiletypeSignalFile,
+        Version:  "1",
+    }
+    
+    for cmdCode := cmdCodeMin; cmdCode <= cmdCodeMax; cmdCode++ {
+        sig := irfile.Signal{
+            Name:     fmt.Sprintf("Cmd %d", cmdCode),
+            Type:     irfile.SignalTypeParsed,
+            Protocol: irfile.ProtocolNECExt,
+            Address:  addr,
+            Command:  cmd,
+        }
+		
+        lib.Signals = append(lib.Signals, sig)
+    }
+        
+    data, err := Marshal(lib)
+    
+    if err != nil {
+        panic(err)
+    }
+    
+    err = os.WriteFile("gen.ir", data, 0644)
+    
+    if err != nil {
+        panic(err)
+    }
+}   
 ```
 
 ## Credits
