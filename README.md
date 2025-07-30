@@ -107,6 +107,10 @@ func main() {
         Filetype: irfile.FiletypeSignalFile,
         Version:  "1",
     }
+
+	addr := 0x05
+	cmdCodeMin := 0x4000
+	cmdCodeMax := 0x40FF
     
     for cmdCode := cmdCodeMin; cmdCode <= cmdCodeMax; cmdCode++ {
         sig := irfile.Signal{
