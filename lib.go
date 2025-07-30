@@ -49,7 +49,7 @@ type Signal struct {
 	Data      []int
 }
 
-func Unmarshal(s []byte) (*SignalLib, error) {
+func Unmarshal(s []byte) (*SignalLib, error) { //nolint:cyclop
 	lib := SignalLib{}
 	signals := make([]Signal, 0, 10)
 
@@ -101,7 +101,6 @@ func Unmarshal(s []byte) (*SignalLib, error) {
 			curr.Protocol = value
 		case "address":
 			addr, err := leHexToUint32(value)
-
 			if err != nil {
 				return nil, fmt.Errorf("invalid address at line %d: %v", lineno, err)
 			}
@@ -109,7 +108,6 @@ func Unmarshal(s []byte) (*SignalLib, error) {
 			curr.Address = addr
 		case "command":
 			cmd, err := leHexToUint32(value)
-
 			if err != nil {
 				return nil, fmt.Errorf("invalid command at line %d: %v", lineno, err)
 			}
@@ -117,7 +115,6 @@ func Unmarshal(s []byte) (*SignalLib, error) {
 			curr.Command = cmd
 		case "frequency":
 			freq, err := strconv.Atoi(value)
-
 			if err != nil {
 				return nil, fmt.Errorf("invalid frequency at line %d: %v", lineno+1, err)
 			}
@@ -125,7 +122,6 @@ func Unmarshal(s []byte) (*SignalLib, error) {
 			curr.Frequency = freq
 		case "duty_cycle":
 			duty, err := strconv.ParseFloat(value, 64)
-
 			if err != nil {
 				return nil, fmt.Errorf("invalid duty_cycle at line %d: %v", lineno+1, err)
 			}
@@ -140,6 +136,7 @@ func Unmarshal(s []byte) (*SignalLib, error) {
 				if err != nil {
 					return nil, fmt.Errorf("invalid data int at line %d: %v", lineno+1, err)
 				}
+
 				ints[i] = n
 			}
 
@@ -154,7 +151,6 @@ func Unmarshal(s []byte) (*SignalLib, error) {
 	lib.Signals = signals
 
 	return &lib, nil
-
 }
 
 func Marshal(l *SignalLib) ([]byte, error) {
@@ -164,7 +160,6 @@ func Marshal(l *SignalLib) ([]byte, error) {
 	_, _ = fmt.Fprintf(&buf, "Version: %s\n", l.Version)
 
 	for _, s := range l.Signals {
-
 		buf.WriteString("#\n")
 
 		_, _ = fmt.Fprintf(&buf, "name: %s\n", s.Name)

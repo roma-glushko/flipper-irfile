@@ -9,6 +9,13 @@ GOBIN ?= $(BIN_DIR)
 export GOBIN
 export PATH := $(BIN_DIR):$(PATH)
 
+tools-test: ## Install tools for testing
+	@echo "🚚 Downloading tools for testing.."
+	@mkdir -p $(GOBIN)
+	@ \
+	command -v gocover-cobertura > /dev/null || go install github.com/boumenot/gocover-cobertura@latest & \
+	wait
+
 .PHONY: tools
 tools: tools-test ## Install static checkers & other binaries
 	@echo "🚚 Downloading tools.."
