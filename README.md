@@ -2,7 +2,7 @@
 
 🐬 Flipper Zero Infra Red (IR) File Parser. 
 
-You can use to load, process and save Flipper Zero IR signal and IR library files:
+You can use to load, process and save [Flipper Zero IR signal and IR library files](https://github.com/jamisonderek/flipper-zero-tutorials/wiki/Infrared):
 
 ```text
 Filetype: IR library file
