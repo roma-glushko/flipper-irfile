@@ -1,0 +1,62 @@
+version: "2"
+run:
+  go: "1.24.5"
+  tests: false
+  timeout: 5m
+
+linters:
+  enable:
+    - nolintlint
+#    - revive
+    - staticcheck
+    - asasalint
+    - bodyclose
+    - contextcheck
+    - cyclop
+    - dupword
+    - errname
+#    - gosec
+    - nakedret
+    - exhaustive
+    - loggercheck
+    - misspell
+    - nestif
+    - perfsprint
+    - prealloc
+    - nilerr
+    - noctx
+    - misspell
+    - predeclared
+    - testifylint
+    - usestdlibvars
+    - tparallel
+    - unconvert
+    - unparam
+    - wsl_v5
+  settings:
+    govet:
+      enable:
+        - nilness
+        - reflectvaluecompare
+        - sortslice
+        - unusedwrite
+        - defers
+        - atomic
+        - nilfunc
+        - printf
+        - sortslice
+        - tests
+  exclusions:
+    generated: lax
+    presets:
+      - common-false-positives
+
+formatters:
+  enable:
+    - gofmt
+    - gofumpt
+    - goimports
+    - golines
+  exclusions:
+    generated: lax
+

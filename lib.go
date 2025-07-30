@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+type Filetype string
+
 type SignalType string
 
 type Protocol string
@@ -21,8 +23,13 @@ const (
 	SignalTypeRaw    SignalType = "raw"
 )
 
+const (
+	FiletypeSignalLib  Filetype = "IR library file" // used by universal remotes
+	FiletypeSignalFile Filetype = "IR signals file" // used by custom remotes
+)
+
 type SignalLib struct {
-	Filetype string
+	Filetype Filetype
 	Version  string
 	Signals  []Signal
 }
@@ -58,7 +65,7 @@ func Unmarshal(s []byte) (*SignalLib, error) {
 		}
 
 		if lib.Filetype == "" && bytes.HasPrefix(line, []byte("Filetype:")) {
-			lib.Filetype = string(bytes.TrimSpace(bytes.TrimPrefix(line, []byte("Filetype:"))))
+			lib.Filetype = Filetype(bytes.TrimSpace(bytes.TrimPrefix(line, []byte("Filetype:"))))
 			continue
 		}
 

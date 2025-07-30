@@ -1,7 +1,6 @@
 package flipperirlib
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/require"
 	"io"
 	"os"
@@ -15,7 +14,7 @@ func TestMarshalParsedSignals(t *testing.T) {
 
 	require.NoError(t, err)
 	require.NotEmpty(t, lib.Signals)
-	require.Equal(t, lib.Filetype, "IR library file")
+	require.Equal(t, lib.Filetype, FiletypeSignalLib)
 	require.Equal(t, lib.Version, "1")
 	require.Len(t, lib.Signals, 3)
 
@@ -32,7 +31,7 @@ func TestMarshalRawSignals(t *testing.T) {
 
 	require.NoError(t, err)
 	require.NotEmpty(t, lib.Signals)
-	require.Equal(t, lib.Filetype, "IR library file")
+	require.Equal(t, lib.Filetype, FiletypeSignalLib)
 	require.Equal(t, lib.Version, "1")
 	require.Len(t, lib.Signals, 3)
 
@@ -40,29 +39,6 @@ func TestMarshalRawSignals(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, rawLib)
 	require.Equal(t, string(c), string(rawLib))
-}
-
-func TestProcess(t *testing.T) {
-	c := libFile(t, "./testdata/tv.ir")
-
-	lib, err := Unmarshal(c)
-	require.NoError(t, err)
-
-	powerSignals := make([]Signal, 0, 50)
-
-	for _, s := range lib.Signals {
-		if s.Name == "Power" && s.Type == SignalTypeParsed {
-			powerSignals = append(powerSignals, s)
-		}
-	}
-
-	fmt.Println(fmt.Sprintf("power signals found: %d", len(powerSignals)))
-
-	lib.Signals = powerSignals
-	rawLib, err := Marshal(lib)
-
-	err = os.WriteFile("./testdata/power.ir", rawLib, 0644)
-	require.NoError(t, err)
 }
 
 func libFile(t *testing.T, path string) []byte {
