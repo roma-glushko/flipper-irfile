@@ -13,6 +13,12 @@ type: parsed
 protocol: SIRC
 address: 01 00 00 00
 command: 15 00 00 00
+#
+name: Power
+type: raw
+frequency: 38000
+duty_cycle: 0.330000
+data: 1617 4604 1559 1537 1560 1537 1560 4661 1533 33422 1613 4607 1566 1530 1556 1540 1536 4685 1539
 ```
 
 ## Install
