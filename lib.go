@@ -28,8 +28,17 @@ type SignalType string
 type Protocol string
 
 const (
-	ProtocolNEC Protocol = "NEC"
-	ProtocolRC5 Protocol = "RC5"
+	ProtocolNEC       Protocol = "NEC"
+	ProtocolNEC42     Protocol = "NEC42"
+	ProtocolRC5       Protocol = "RC5"
+	ProtocolRC5X      Protocol = "RC5X"
+	ProtocolRC6       Protocol = "RC6"
+	ProtocolSamsung32 Protocol = "Samsung32"
+	ProtocolSIRC      Protocol = "SIRC"
+	ProtocolNECExt    Protocol = "NECext"
+	ProtocolRCA       Protocol = "RCA"
+	ProtocolPioneer   Protocol = "Pioneer"
+	ProtocolKaseikyo  Protocol = "Kaseikyo"
 )
 
 const (
