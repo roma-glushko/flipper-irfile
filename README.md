@@ -34,8 +34,8 @@ package main
 
 import (
 	"fmt"
-    "io"
-    "os"
+	"io"
+	"os"
 
 	irfile "github.com/roma-glushko/flipperirfile"
 )
@@ -98,44 +98,44 @@ package main
 import (
 	"fmt"
 	"os"
-	
+
 	irfile "github.com/roma-glushko/flipperirfile"
 )
 
 func main() {
-    lib := irfile.SignalLib{
-        Filetype: irfile.FiletypeSignalFile,
-        Version:  "1",
-    }
+	lib := irfile.SignalLib{
+		Filetype: irfile.FiletypeSignalFile,
+		Version:  "1",
+	}
 
 	addr := 0x05
 	cmdCodeMin := 0x4000
 	cmdCodeMax := 0x40FF
-    
-    for cmdCode := cmdCodeMin; cmdCode <= cmdCodeMax; cmdCode++ {
-        sig := irfile.Signal{
-            Name:     fmt.Sprintf("Cmd %d", cmdCode),
-            Type:     irfile.SignalTypeParsed,
-            Protocol: irfile.ProtocolNECExt,
-            Address:  addr,
-            Command:  cmd,
-        }
-		
-        lib.Signals = append(lib.Signals, sig)
-    }
-        
-    data, err := Marshal(lib)
-    
-    if err != nil {
-        panic(err)
-    }
-    
-    err = os.WriteFile("gen.ir", data, 0644)
-    
-    if err != nil {
-        panic(err)
-    }
-}   
+
+	for cmdCode := cmdCodeMin; cmdCode <= cmdCodeMax; cmdCode++ {
+		sig := irfile.Signal{
+			Name:     fmt.Sprintf("Cmd %d", cmdCode),
+			Type:     irfile.SignalTypeParsed,
+			Protocol: irfile.ProtocolNECExt,
+			Address:  addr,
+			Command:  cmd,
+		}
+
+		lib.Signals = append(lib.Signals, sig)
+	}
+
+	data, err := Marshal(lib)
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile("gen.ir", data, 0644)
+
+	if err != nil {
+		panic(err)
+	}
+}
 ```
 
 ## Credits
