@@ -1,4 +1,4 @@
-module github.com/roma-glushko/flipper-irfile
+module github.com/roma-glushko/flipperirfile
 
 go 1.24.4
 
