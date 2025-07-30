@@ -51,3 +51,7 @@ lint-ci: ## Lint the source code in CI mode
 .PHONY: test
 test: ## Run tests
 	@go test -v -count=1 -race -shuffle=on -coverprofile=coverage.txt ./...
+
+publish: ## Publish the package
+	@echo "🚀 Publishing the package.."
+	@GOPROXY=proxy.golang.org go list -m github.com/roma-glushko/flipper-irfile@v0.0.2
