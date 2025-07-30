@@ -78,3 +78,7 @@ if err != nil {
     panic(err)
 }
 ```
+
+## Credits
+
+Made with ❤️ by [Roman Glushko](https://github.com/roma-glushko), Apache License 2.0.
