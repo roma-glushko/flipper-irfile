@@ -99,7 +99,7 @@ import (
 	"fmt"
 	"os"
 	
-	irfile flipperirfile "github.com/roma-glushko/flipper-irfile"
+	irfile "github.com/roma-glushko/flipper-irfile"
 )
 
 func main() {
