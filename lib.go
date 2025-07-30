@@ -139,14 +139,14 @@ func Unmarshal(s []byte) (*SignalLib, error) { //nolint:cyclop
 		case "frequency":
 			freq, err := strconv.Atoi(value)
 			if err != nil {
-				return nil, fmt.Errorf("invalid frequency at line %d: %v", lineno+1, err)
+				return nil, fmt.Errorf("invalid frequency at line %d: %v", lineno, err)
 			}
 
 			curr.Frequency = freq
 		case "duty_cycle":
 			duty, err := strconv.ParseFloat(value, 64)
 			if err != nil {
-				return nil, fmt.Errorf("invalid duty_cycle at line %d: %v", lineno+1, err)
+				return nil, fmt.Errorf("invalid duty_cycle at line %d: %v", lineno, err)
 			}
 
 			curr.DutyCycle = duty
@@ -157,7 +157,7 @@ func Unmarshal(s []byte) (*SignalLib, error) { //nolint:cyclop
 			for i, f := range fields {
 				n, err := strconv.Atoi(f)
 				if err != nil {
-					return nil, fmt.Errorf("invalid data int at line %d: %v", lineno+1, err)
+					return nil, fmt.Errorf("invalid data int at line %d: %v", lineno, err)
 				}
 
 				ints[i] = n
