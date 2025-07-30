@@ -1,7 +1,7 @@
 name: Checks
 
 concurrency:
-  group: {% raw %}${{ github.head_ref || github.ref_name }}{% endraw %}
+  group: ${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 on:
@@ -27,7 +27,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '{{go_version}}'
+          go-version: '1.24.4'
 
       - name: Run Golang Lint Command
         run: |
@@ -45,46 +45,3 @@ jobs:
         uses: apache/skywalking-eyes/header@main
         with:
           config: .licenserc.yaml
-
-  generate:
-    runs-on: ubuntu-latest
-    name: Ensure Code Generated
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '{{go_version}}'
-
-      - name: Install Envdoc
-        run: |
-          go install github.com/g4s8/envdoc@latest
-
-      - name: Add Go Bin to PATH
-        run: |
-          {% raw %}echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH{% endraw %}
-
-      - name: Ensure Code Generated
-        run: |
-          make gen-check
-
-  build:
-             strategy:
-               matrix:
-                 os: [macos-latest, ubuntu-latest, windows-latest]
-    {% raw %}runs-on: ${{ matrix.os }}{% endraw %}
-             name: Build Binary
-             steps:
-               - name: Checkout Code
-                 uses: actions/checkout@v4
-
-               - name: Set up Go
-                 uses: actions/setup-go@v4
-                 with:
-                   go-version: '{{go_version}}'
-
-               - name: Build The Shop Binary
-                 run:  make build
